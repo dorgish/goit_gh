@@ -1,0 +1,9 @@
+.List {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    flex-grow: 1;
+    gap: 32px;
+    margin-bottom: 43px;
+}
