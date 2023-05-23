@@ -17,7 +17,10 @@ const Search = () => {
         dispatch(search(inputValue, 1));
     };
 
-    const debouncedChangeHandler = useMemo(() => debounce(changeHandler, 500), []);
+    const debouncedChangeHandler = useMemo(() => {
+        return debounce(changeHandler, 500);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <input

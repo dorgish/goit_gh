@@ -1,6 +1,6 @@
 .ListItem {
     display: flex;
-    align-items: end;
+    align-items: flex-end;
     gap: 30px;
     height: 224;
     padding: 40px;

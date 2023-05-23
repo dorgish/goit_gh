@@ -8,7 +8,7 @@ const search =
 
         try {
             const { data } = await Axios.get(
-                `https://api.github.com/search/repositories?q=${query}&per_page=20&page=${page}`
+                `https://api.github.com/search/reposqitories?q=${query}&per_page=20&page=${page}`
             );
             dispatch(searchSuccess(data));
             dispatch(setQuery(query));
