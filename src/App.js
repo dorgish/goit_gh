@@ -7,36 +7,32 @@ import { search } from './redux/search/search-operations';
 import { ThreeDots } from 'react-loader-spinner';
 import { getLoading } from './redux/search/search-selectors';
 import { useSelector } from 'react-redux';
-import { getResult, getQuery, getPage } from './redux/search/search-selectors';
+import { getResult } from './redux/search/search-selectors';
 import Pagination from '@material-ui/lab/Pagination';
 
 function App() {
     const isLoading = useSelector(getLoading);
     const dispatch = useDispatch();
     const results = useSelector(getResult);
-    const currentPage = useSelector(getPage);
-    const query = useSelector(getQuery);
-    const [data, setData] = useState([]);
+    const [query, setQuery] = useState('react');
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        if (results) return setData(results);
         dispatch(search(query, currentPage));
-    }, [results, dispatch, currentPage, query]);
-
-    const handleChange = (_event, value) => {
-        dispatch(search(query, value));
-    };
+    }, [dispatch, currentPage, query]);
 
     return (
         <Main>
-            <Search />
+            <Search setQuery={setQuery} setCurrentPage={setCurrentPage} />
             {isLoading ? (
                 <ThreeDots wrapperStyle={{ justifyContent: 'center' }} color="darkGrey" height={120} width={120} />
             ) : (
                 <>
-                    <List data={data} />
+                    <List data={results} />
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        {!!data.length && <Pagination count={10} page={currentPage} onChange={handleChange} />}
+                        {!!results.length && (
+                            <Pagination count={10} page={currentPage} onChange={(_, value) => setCurrentPage(value)} />
+                        )}
                     </div>
                 </>
             )}
