@@ -16,18 +16,12 @@ function App() {
     const results = useSelector(getResult);
     const currentPage = useSelector(getPage);
     const query = useSelector(getQuery);
-
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        dispatch(search());
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useEffect(() => {
-        if (!results) return;
-        setData(results);
-    }, [results]);
+        if (results) return setData(results);
+        dispatch(search(query, currentPage));
+    }, [results, dispatch, currentPage, query]);
 
     const handleChange = (_event, value) => {
         dispatch(search(query, value));

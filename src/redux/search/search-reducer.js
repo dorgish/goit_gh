@@ -6,11 +6,11 @@ const result = createReducer([], {
     [searchSuccess]: (_, action) => action.payload,
 });
 
-const query = createReducer([], {
+const query = createReducer('react', {
     [setQuery]: (_, action) => action.payload,
 });
 
-const page = createReducer([], {
+const page = createReducer(1, {
     [setPage]: (_, action) => action.payload,
 });
 

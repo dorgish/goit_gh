@@ -1,26 +1,22 @@
-import { useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import s from './Search.module.css';
 import { useDispatch } from 'react-redux';
 import { search } from '../../redux/search/search-operations';
-
-import debounce from 'lodash.debounce';
+import useDebounce from '../../hooks/useDebounce';
 
 const Search = () => {
     const dispatch = useDispatch();
     const [value, setValue] = useState('');
+    const debouncedValue = useDebounce(value, 500);
 
-    const changeHandler = event => {
-        event.preventDefault();
-
-        let inputValue = event.target.value || 'react';
-
+    useEffect(() => {
+        let inputValue = debouncedValue || 'react';
         dispatch(search(inputValue, 1));
-    };
+    }, [debouncedValue, dispatch]);
 
-    const debouncedChangeHandler = useMemo(() => {
-        return debounce(changeHandler, 500);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const handleChange = event => {
+        setValue(event.target.value);
+    };
 
     return (
         <input
@@ -28,7 +24,7 @@ const Search = () => {
             placeholder="Search"
             value={value}
             onChange={event => {
-                debouncedChangeHandler(event);
+                handleChange(event);
                 setValue(event.target.value);
             }}
         />
