@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import List from './components/list/List';
 import Main from './components/main/Main';
 import Search from './components/search/Search';
@@ -9,6 +9,7 @@ import { getLoading } from './redux/search/search-selectors';
 import { useSelector } from 'react-redux';
 import { getResult } from './redux/search/search-selectors';
 import Pagination from '@material-ui/lab/Pagination';
+import debounce from 'lodash.debounce';
 
 function App() {
     const isLoading = useSelector(getLoading);
@@ -21,9 +22,20 @@ function App() {
         dispatch(search(query, currentPage));
     }, [dispatch, currentPage, query]);
 
+    const handleSetQuery = value => {
+        setCurrentPage(1);
+        if (value) {
+            return setQuery(value);
+        } else {
+            return setQuery('react');
+        }
+    };
+
+    const debouncedChangeHandler = useMemo(() => debounce(handleSetQuery, 1000), []);
+
     return (
         <Main>
-            <Search setQuery={setQuery} setCurrentPage={setCurrentPage} />
+            <Search debouncedChangeHandler={debouncedChangeHandler} />
             {isLoading ? (
                 <ThreeDots wrapperStyle={{ justifyContent: 'center' }} color="darkGrey" height={120} width={120} />
             ) : (

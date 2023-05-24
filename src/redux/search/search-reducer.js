@@ -14,6 +14,5 @@ const loading = createReducer(false, {
 
 export default combineReducers({
     result,
-
     loading,
 });

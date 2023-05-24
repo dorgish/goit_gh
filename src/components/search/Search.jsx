@@ -1,17 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import s from './Search.module.css';
-import useDebounce from '../../hooks/useDebounce';
 
-const Search = ({ setQuery, setCurrentPage }) => {
+const Search = ({ debouncedChangeHandler }) => {
     const [value, setValue] = useState('');
-
-    const debouncedValue = useDebounce(value, 500);
-
-    useEffect(() => {
-        let inputValue = debouncedValue || 'react';
-        setQuery(inputValue);
-        setCurrentPage(1);
-    }, [debouncedValue, setQuery, setCurrentPage]);
 
     return (
         <input
@@ -20,6 +11,7 @@ const Search = ({ setQuery, setCurrentPage }) => {
             value={value}
             onChange={event => {
                 setValue(event.target.value);
+                debouncedChangeHandler(event.target.value);
             }}
         />
     );
